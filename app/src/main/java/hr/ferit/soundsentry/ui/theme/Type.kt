@@ -2,9 +2,19 @@ package hr.ferit.soundsentry.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import hr.ferit.soundsentry.R
+
+val RaleWay = FontFamily(
+    Font(R.font.raleway_regular, FontWeight.Normal, FontStyle.Normal),
+    Font(R.font.raleway_italic, FontWeight.Normal, FontStyle.Italic),
+    Font(R.font.raleway_semibold, FontWeight.SemiBold, FontStyle.Normal),
+    Font(R.font.raleway_semibolditalic, FontWeight.SemiBold, FontStyle.Italic),
+)
 
 // Set of Material typography styles to start with
 val Typography = Typography(
