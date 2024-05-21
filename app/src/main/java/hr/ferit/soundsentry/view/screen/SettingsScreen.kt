@@ -1,7 +1,6 @@
 package hr.ferit.soundsentry.view.screen
 
 import android.widget.Toast
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -9,8 +8,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.paint
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavController
 import hr.ferit.soundsentry.R
 import hr.ferit.soundsentry.authentication.UserData
@@ -34,13 +35,19 @@ fun SettingsScreen (
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(colorResource(R.color.background_blue)),
+            .paint(
+                painterResource(id = R.drawable.login_background),
+                contentScale = ContentScale.FillBounds,
+            )
     ) {
         Column(
             modifier = Modifier.fillMaxWidth(),
         ) {
             StatusBar(userData, onSignOut, userInfoViewModel.tokens)
             SettingsScreenBody(
+                onBackClick = {
+                    navController.popBackStack()
+                },
                 onSetPeriodClick = { period ->
                     if (!NetworkChecker.isNetworkAvailable(context)) {
                         Toast.makeText(

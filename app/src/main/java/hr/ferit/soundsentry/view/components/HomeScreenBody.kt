@@ -49,7 +49,8 @@ fun HomeScreenBody(
                     color = Color.Black,
                     shape = RoundedCornerShape(40.dp),
                 ),
-            colors = ButtonDefaults.buttonColors(contentColor = Color.Black, containerColor = Color.White),
+            colors = ButtonDefaults.buttonColors(contentColor = Color.White,
+                containerColor = colorResource(R.color.purple_700)),
         ) {
             Text(
                 stringResource(R.string.settings),

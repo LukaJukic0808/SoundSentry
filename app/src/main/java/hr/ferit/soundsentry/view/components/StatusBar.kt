@@ -19,6 +19,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextAlign
@@ -62,7 +63,7 @@ fun StatusBar(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .background(Color.White),
+            .background(colorResource(R.color.status_background_color)),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.End,
     ) {
@@ -71,7 +72,7 @@ fun StatusBar(
             textAlign = TextAlign.Center,
             fontSize = 15.sp,
             fontStyle = FontStyle.Italic,
-            color = Color.Black,
+            color = Color.White,
         )
         Spacer(Modifier.width(4.dp))
         Image(

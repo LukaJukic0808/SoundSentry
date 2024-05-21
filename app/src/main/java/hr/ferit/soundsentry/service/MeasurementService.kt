@@ -10,7 +10,10 @@ import android.os.Handler
 import android.os.IBinder
 import android.os.Looper
 import android.util.Log
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.FirebaseFirestoreException
 import hr.ferit.soundsentry.model.MeasurementModel
+import hr.ferit.soundsentry.model.UserInfoModel
 import hr.ferit.soundsentry.permissions.hasRecordAudioPermission
 import hr.ferit.soundsentry.view.components.NetworkChecker
 import kotlinx.coroutines.CoroutineScope
@@ -18,6 +21,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
 import java.io.File
@@ -37,6 +41,8 @@ class MeasurementService : Service(), KoinComponent {
     private lateinit var mediaRecorder: MediaRecorder
     private lateinit var outputFile: File
     private lateinit var notificationManager: NotificationManager
+    private var measurementPeriod: Long = 15
+    private val db = FirebaseFirestore.getInstance()
 
     override fun onBind(intent: Intent?): IBinder? {
         return null
@@ -67,6 +73,15 @@ class MeasurementService : Service(), KoinComponent {
     private fun collectData() {
         coroutineScope.launch {
             if (initialNotificationDelay) {
+                try {
+                    val currentUserInfoSnapshot = db.collection("users").document(userId!!).get().await()
+                    if (currentUserInfoSnapshot != null && currentUserInfoSnapshot.exists()) {
+                        val userInfoModel = currentUserInfoSnapshot.toObject(UserInfoModel::class.java)
+                        measurementPeriod = userInfoModel?.period?.toLong()!!
+                    }
+                } catch (e: FirebaseFirestoreException) {
+                    Log.d("Fetching user info", "Failed")
+                }
                 delay(10000L)
                 initialNotificationDelay = false
             }
@@ -120,7 +135,7 @@ class MeasurementService : Service(), KoinComponent {
                     Log.d("Missing permissions", "Grant all permissions")
                 }
             }
-            handler.postDelayed(::collectData, TimeUnit.MINUTES.toMillis(15))
+            handler.postDelayed(::collectData, TimeUnit.MINUTES.toMillis(measurementPeriod))
         }
     }
 
