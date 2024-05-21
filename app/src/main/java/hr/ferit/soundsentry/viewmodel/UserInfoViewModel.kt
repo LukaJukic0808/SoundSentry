@@ -1,39 +1,28 @@
 package hr.ferit.soundsentry.viewmodel
 
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
 import hr.ferit.soundsentry.model.UserInfoModel
 
-class UserInfoViewModel : ViewModel() {
+class UserInfoViewModel : ViewModel(), UserInfoModel.Observer {
 
-    private val db = Firebase.firestore
-    private val userId = Firebase.auth.currentUser?.uid
+    private val userInfoModel = UserInfoModel()
     var tokens by mutableStateOf(0)
+    var period by mutableStateOf(0)
 
     init {
-        getRealTimeTokensUpdate()
+        userInfoModel.addListener(this)
+        userInfoModel.getRealTimeUpdate()
     }
 
-    private fun getRealTimeTokensUpdate() {
-        if (userId != null) {
-            val docRef = db.collection("users").document(userId)
-            docRef.addSnapshotListener { snapshot, e ->
-                if (e != null) {
-                    Log.w("HomeScreen", "Listen failed.", e)
-                    return@addSnapshotListener
-                }
-                if (snapshot != null && snapshot.exists()) {
-                    tokens = snapshot.toObject(UserInfoModel::class.java)?.tokens!!
-                } else {
-                    Log.d("HomeScreen", "Snapshot")
-                }
-            }
-        }
+    suspend fun save(period: Int): Boolean {
+        return userInfoModel.save(period)
+    }
+
+    override fun update(tokens: Int, period: Int) {
+        this.tokens = tokens
+        this.period = period
     }
 }

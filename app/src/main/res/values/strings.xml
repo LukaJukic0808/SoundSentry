@@ -11,7 +11,19 @@
     <string name="permission_required">"Permission required"</string>
     <string name="ok">"Okay"</string>
     <string name="update">"Measurement settings updated"</string>
-    <string name="update_failed">"Period must be between 1 and 15 minutes"</string>
+    <string name="update_failed">"Something went wrong while updating, please try again."</string>
+    <string name="measurement_description">![CDATA[
+        App collects data from sensors and microphone.
+        You receive 5 tokens for each sensor data provided.
+        You receive 10 tokens for each noise data provided.
+        Measurement is run in background periodically,
+        allowing you to use your phone without any worries.
+        Microphone records your surroundings for 5 seconds
+        each time measurement is taking place.
+        Down below you can choose measurement period.
+        Changes will be applied after you start new measurement.
+    ]]</string>
+    <string name="set">"Set"</string>
     <string name="grant_permission">"Grant permission"</string>
     <string name="microphone_permanently_declined">"You have permanently declined microphone permission. Go to your app settings to grant it."</string>
     <string name="microphone_access_needed">"Microphone access is necessary for measurement."</string>
