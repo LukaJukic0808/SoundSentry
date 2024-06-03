@@ -8,7 +8,7 @@ import kotlinx.coroutines.tasks.await
 
 data class UserInfoModel(
     var tokens: Int = 0,
-    var period: Int = 0
+    var period: Int = 15
 ) {
     private val db = FirebaseFirestore.getInstance()
     private val userId = Firebase.auth.currentUser?.uid
