@@ -7,10 +7,18 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import hr.ferit.soundsentry.model.LightSensorModel
+import hr.ferit.soundsentry.model.ProximitySensorModel
+import hr.ferit.soundsentry.permissions.isMeasurementRunning
 import hr.ferit.soundsentry.ui.theme.SoundSentryTheme
 import hr.ferit.soundsentry.view.screen.MainScreen
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.get
 
-class MainActivity : ComponentActivity() {
+
+class MainActivity : ComponentActivity(), KoinComponent {
+    private val proximitySensorModel: ProximitySensorModel = get()
+    private val lightSensorModel: LightSensorModel = get()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -22,6 +30,22 @@ class MainActivity : ComponentActivity() {
                     MainScreen()
                 }
             }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (!applicationContext.isMeasurementRunning()) {
+            proximitySensorModel.start()
+            lightSensorModel.start()
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if (!applicationContext.isMeasurementRunning()) {
+            proximitySensorModel.stop()
+            lightSensorModel.stop()
         }
     }
 }

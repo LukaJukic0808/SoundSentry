@@ -7,9 +7,11 @@ import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.tasks.await
 
 data class MeasurementModel(
-    var noiseAmplitude: Int = 0
-    // doesSensorExist: Boolean,
-    // sensorValue: Float/Int
+    var noiseAmplitude: Int = 0,
+    var doesProximitySensorExist: Boolean,
+    var doesLightSensorExist: Boolean,
+    var distance: Float = 0f,
+    var lux: Float = 0f
 ) {
 
     suspend fun save(
@@ -24,9 +26,13 @@ data class MeasurementModel(
             addedTokens += 10
         }
 
-        /* if (doesSensorExist) {
+        if(doesProximitySensorExist) {
             addedTokens += 5
-        } */
+        }
+
+        if (doesLightSensorExist) {
+            addedTokens += 5
+        }
 
         if (userId != null) {
             try {
