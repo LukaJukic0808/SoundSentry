@@ -68,6 +68,7 @@ fun SettingsScreenBody(
             Text(
                 stringResource(R.string.measurement_description),
                 textAlign = TextAlign.Center,
+                color = Color.White,
                 fontFamily = RaleWay,
                 fontStyle = FontStyle.Normal,
                 fontWeight = FontWeight.SemiBold,
@@ -93,7 +94,7 @@ fun SettingsScreenBody(
                         end = 25.dp,
                     ),
             )
-            Text(text = "${sliderPosition.toInt()} min", fontSize = 20.sp)
+            Text(text = "${sliderPosition.toInt()} min", fontSize = 20.sp, color = Color.White)
             Spacer(Modifier.height(40.dp))
             Button(
                 onClick = {
