@@ -8,7 +8,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import hr.ferit.soundsentry.model.LightSensorModel
-import hr.ferit.soundsentry.model.ProximitySensorModel
+import hr.ferit.soundsentry.model.AccelerometerModel
 import hr.ferit.soundsentry.permissions.isMeasurementRunning
 import hr.ferit.soundsentry.ui.theme.SoundSentryTheme
 import hr.ferit.soundsentry.view.screen.MainScreen
@@ -17,7 +17,7 @@ import org.koin.core.component.get
 
 
 class MainActivity : ComponentActivity(), KoinComponent {
-    private val proximitySensorModel: ProximitySensorModel = get()
+    private val accelerometerModel: AccelerometerModel = get()
     private val lightSensorModel: LightSensorModel = get()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,7 +36,7 @@ class MainActivity : ComponentActivity(), KoinComponent {
     override fun onResume() {
         super.onResume()
         if (!applicationContext.isMeasurementRunning()) {
-            proximitySensorModel.start()
+            accelerometerModel.start()
             lightSensorModel.start()
         }
     }
@@ -44,7 +44,7 @@ class MainActivity : ComponentActivity(), KoinComponent {
     override fun onPause() {
         super.onPause()
         if (!applicationContext.isMeasurementRunning()) {
-            proximitySensorModel.stop()
+            accelerometerModel.stop()
             lightSensorModel.stop()
         }
     }

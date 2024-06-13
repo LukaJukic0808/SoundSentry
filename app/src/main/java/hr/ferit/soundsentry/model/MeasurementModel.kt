@@ -8,9 +8,9 @@ import kotlinx.coroutines.tasks.await
 
 data class MeasurementModel(
     var noiseAmplitude: Int = 0,
-    var doesProximitySensorExist: Boolean,
+    var doesAccelerometerExist: Boolean,
     var doesLightSensorExist: Boolean,
-    var distance: Float = 0f,
+    var movementDetected: Boolean = false,
     var lux: Float = 0f
 ) {
 
@@ -26,7 +26,7 @@ data class MeasurementModel(
             addedTokens += 10
         }
 
-        if(doesProximitySensorExist) {
+        if(doesAccelerometerExist) {
             addedTokens += 5
         }
 

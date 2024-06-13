@@ -14,7 +14,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
 import hr.ferit.soundsentry.model.LightSensorModel
 import hr.ferit.soundsentry.model.MeasurementModel
-import hr.ferit.soundsentry.model.ProximitySensorModel
+import hr.ferit.soundsentry.model.AccelerometerModel
 import hr.ferit.soundsentry.model.UserInfoModel
 import hr.ferit.soundsentry.permissions.hasRecordAudioPermission
 import hr.ferit.soundsentry.view.components.NetworkChecker
@@ -44,7 +44,7 @@ class MeasurementService : Service(), KoinComponent {
     private lateinit var mediaRecorder: MediaRecorder
     private lateinit var outputFile: File
     private lateinit var notificationManager: NotificationManager
-    private lateinit var proximitySensorModel: ProximitySensorModel
+    private lateinit var accelerometerModel: AccelerometerModel
     private lateinit var lightSensorModel: LightSensorModel
     private var measurementPeriod: Long = 15
     private val db = FirebaseFirestore.getInstance()
@@ -58,7 +58,7 @@ class MeasurementService : Service(), KoinComponent {
         mediaRecorder = MediaRecorder(this)
         outputFile = File(this.filesDir, "recording")
         notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-        proximitySensorModel = get()
+        accelerometerModel = get()
         lightSensorModel = get()
     }
 
@@ -106,17 +106,19 @@ class MeasurementService : Service(), KoinComponent {
                             mediaRecorder.prepare()
                             mediaRecorder.start()
                             var averageAmplitude = mediaRecorder.maxAmplitude
+                            accelerometerModel.startStepCount()
                             for (i in 1..50) {
                                 delay(100L)
                                 averageAmplitude += mediaRecorder.maxAmplitude
                             }
                             mediaRecorder.stop()
+                            accelerometerModel.stopStepCount()
 
                             val measurement = MeasurementModel(
                                 noiseAmplitude = averageAmplitude / 50,
-                                doesProximitySensorExist = proximitySensorModel.doesSensorExist,
+                                doesAccelerometerExist = accelerometerModel.doesSensorExist,
                                 doesLightSensorExist = lightSensorModel.doesSensorExist,
-                                distance = proximitySensorModel.distance.value,
+                                movementDetected = accelerometerModel.getMovementInformation(),
                                 lux = lightSensorModel.lux.value
                                 )
                             measurementTokens = measurement.save(userId)
