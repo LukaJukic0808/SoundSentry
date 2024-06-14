@@ -87,7 +87,7 @@ fun MainScreen() {
                         ).show()
                     } else {
                         coroutineScope.launch {
-                            val signInIntentSender = googleAuthClient.signIn()
+                            val signInIntentSender = googleAuthClient.signIn(applicationContext)
                             launcher.launch(
                                 IntentSenderRequest.Builder(
                                     signInIntentSender ?: return@launch,

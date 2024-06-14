@@ -3,8 +3,10 @@ package hr.ferit.soundsentry.authentication
 import android.content.Context
 import android.content.Intent
 import android.content.IntentSender
+import android.widget.Toast
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.SignInClient
+import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -18,7 +20,7 @@ class GoogleAuthClient (
 ) {
     private val auth = Firebase.auth
 
-    suspend fun signIn(): IntentSender? {
+    suspend fun signIn(context: Context): IntentSender? {
         val result = try {
             oneTapClient.beginSignIn(
                 buildSignInRequest(),
@@ -26,6 +28,11 @@ class GoogleAuthClient (
         } catch (e: Exception) {
             e.printStackTrace()
             if (e is CancellationException) throw e
+            if (e is ApiException) {
+                if(e.statusCode == 16) {
+                    Toast.makeText(context, R.string.no_google_account, Toast.LENGTH_LONG).show()
+                }
+            }
             null
         }
         return result?.pendingIntent?.intentSender

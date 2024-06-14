@@ -3,6 +3,7 @@
     <string name="app_title">Sound Sentry</string>
     <string name="web_client_id">217268876076-phfbcaai7col2qh221em77vb7gffruuq.apps.googleusercontent.com</string>
     <string name="sign_in_with_google">Sign in with Google</string>
+    <string name="no_google_account">Please add Google account to your phone</string>
     <string name="sign_out">Log out</string>
     <string name="sign_in_success">Successfully signed in</string>
     <string name="sign_out_success">Successfully signed out</string>
