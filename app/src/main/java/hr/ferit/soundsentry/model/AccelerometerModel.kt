@@ -6,9 +6,9 @@ import kotlin.math.sqrt
 
 class AccelerometerModel(private val accelerometer: MeasurableSensor) {
 
-    var x = MutableStateFlow(0.0f)
-    var y = MutableStateFlow(0.0f)
-    var z = MutableStateFlow(0.0f)
+    private var x = MutableStateFlow(0.0f)
+    private var y = MutableStateFlow(0.0f)
+    private var z = MutableStateFlow(0.0f)
     val doesSensorExist = accelerometer.doesSensorExist
     private var isMeasuring = false
     private var stepCount: Int = 0

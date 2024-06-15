@@ -1,4 +1,4 @@
-package hr.ferit.soundsentry.permissions
+package hr.ferit.soundsentry.extension
 
 import android.Manifest
 import android.app.ActivityManager

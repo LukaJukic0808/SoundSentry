@@ -1,4 +1,4 @@
-package hr.ferit.soundsentry.permissions
+package hr.ferit.soundsentry.permission
 
 import android.content.Context
 import hr.ferit.soundsentry.R

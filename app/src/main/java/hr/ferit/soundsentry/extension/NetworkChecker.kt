@@ -1,4 +1,4 @@
-package hr.ferit.soundsentry.view.components
+package hr.ferit.soundsentry.extension
 
 import android.content.Context
 import android.net.ConnectivityManager

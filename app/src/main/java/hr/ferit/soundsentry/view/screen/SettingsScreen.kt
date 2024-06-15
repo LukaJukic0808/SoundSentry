@@ -15,7 +15,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavController
 import hr.ferit.soundsentry.R
 import hr.ferit.soundsentry.authentication.UserData
-import hr.ferit.soundsentry.view.components.NetworkChecker
+import hr.ferit.soundsentry.extension.NetworkChecker
 import hr.ferit.soundsentry.view.components.SettingsScreenBody
 import hr.ferit.soundsentry.view.components.StatusBar
 import hr.ferit.soundsentry.viewmodel.UserInfoViewModel
@@ -36,7 +36,7 @@ fun SettingsScreen (
         modifier = Modifier
             .fillMaxSize()
             .paint(
-                painterResource(id = R.drawable.login_background),
+                painterResource(id = R.drawable.background),
                 contentScale = ContentScale.FillBounds,
             )
     ) {
@@ -56,7 +56,6 @@ fun SettingsScreen (
                             Toast.LENGTH_SHORT,
                         ).show()
                     } else {
-                        // check and save to DB if correct, quit current running service
                         coroutineScope.launch {
                             val isSuccessful = userInfoViewModel.save(period)
                             if (isSuccessful) {
@@ -72,11 +71,11 @@ fun SettingsScreen (
                                     Toast.LENGTH_SHORT,
                                 ).show()
                             }
+                            navController.popBackStack()
                         }
-                        navController.popBackStack()
                     }
                 },
-                userInfoViewModel.period.toFloat()
+                currentPeriod = userInfoViewModel.period.toFloat()
             )
         }
     }

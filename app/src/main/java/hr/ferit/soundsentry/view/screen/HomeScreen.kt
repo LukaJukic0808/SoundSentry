@@ -24,11 +24,11 @@ import androidx.core.app.ActivityCompat
 import androidx.navigation.NavController
 import hr.ferit.soundsentry.R
 import hr.ferit.soundsentry.authentication.UserData
-import hr.ferit.soundsentry.permissions.MicrophonePermissionTextProvider
-import hr.ferit.soundsentry.permissions.hasRecordAudioPermission
+import hr.ferit.soundsentry.permission.MicrophonePermissionTextProvider
+import hr.ferit.soundsentry.extension.hasRecordAudioPermission
 import hr.ferit.soundsentry.service.MeasurementService
 import hr.ferit.soundsentry.view.components.HomeScreenBody
-import hr.ferit.soundsentry.view.components.NetworkChecker
+import hr.ferit.soundsentry.extension.NetworkChecker
 import hr.ferit.soundsentry.view.components.PermissionDialog
 import hr.ferit.soundsentry.view.components.StatusBar
 import hr.ferit.soundsentry.view.navigation.Screen
@@ -52,12 +52,10 @@ fun HomeScreen(
         arrayOf(
             Manifest.permission.POST_NOTIFICATIONS,
             Manifest.permission.RECORD_AUDIO,
-            Manifest.permission.ACCESS_FINE_LOCATION,
         )
     } else {
         arrayOf(
             Manifest.permission.RECORD_AUDIO,
-            Manifest.permission.ACCESS_FINE_LOCATION,
         )
     }
 
@@ -79,7 +77,7 @@ fun HomeScreen(
         modifier = Modifier
             .fillMaxSize()
             .paint(
-            painterResource(id = R.drawable.login_background),
+            painterResource(id = R.drawable.background),
             contentScale = ContentScale.FillBounds,
         )
     ) {
@@ -115,7 +113,7 @@ fun HomeScreen(
                         }
                     }
                 },
-                serviceToggleViewModel.isServiceRunning,
+                isServiceRunning = serviceToggleViewModel.isServiceRunning,
             )
         }
     }

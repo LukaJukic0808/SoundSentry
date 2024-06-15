@@ -14,15 +14,13 @@ data class MeasurementModel(
     var lux: Float = 0f
 ) {
 
-    suspend fun save(
-        userId: String?
-    ): Int {
+    suspend fun save(userId: String?): Int {
         val db = Firebase.firestore
         var addedTokens = 0
         var currentTokenBalance = 0
         var period = 15
 
-        if (noiseAmplitude != 0) {  // microphone
+        if (noiseAmplitude != 0) {
             addedTokens += 10
         }
 

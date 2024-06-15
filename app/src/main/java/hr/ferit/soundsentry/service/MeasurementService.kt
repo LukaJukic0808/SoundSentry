@@ -16,8 +16,8 @@ import hr.ferit.soundsentry.model.LightSensorModel
 import hr.ferit.soundsentry.model.MeasurementModel
 import hr.ferit.soundsentry.model.AccelerometerModel
 import hr.ferit.soundsentry.model.UserInfoModel
-import hr.ferit.soundsentry.permissions.hasRecordAudioPermission
-import hr.ferit.soundsentry.view.components.NetworkChecker
+import hr.ferit.soundsentry.extension.hasRecordAudioPermission
+import hr.ferit.soundsentry.extension.NetworkChecker
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
@@ -84,7 +84,9 @@ class MeasurementService : Service(), KoinComponent {
                     val currentUserInfoSnapshot = db.collection("users").document(userId!!).get().await()
                     if (currentUserInfoSnapshot != null && currentUserInfoSnapshot.exists()) {
                         val userInfoModel = currentUserInfoSnapshot.toObject(UserInfoModel::class.java)
-                        measurementPeriod = userInfoModel?.period?.toLong()!!
+                        if(userInfoModel?.period != null) {
+                            measurementPeriod = userInfoModel.period.toLong()
+                        }
                     }
                 } catch (e: FirebaseFirestoreException) {
                     Log.d("Fetching user info", "Failed")
@@ -105,17 +107,17 @@ class MeasurementService : Service(), KoinComponent {
                             mediaRecorder.setOutputFile(outputFile.absolutePath)
                             mediaRecorder.prepare()
                             mediaRecorder.start()
-                            var averageAmplitude = mediaRecorder.maxAmplitude
+                            var amplitudeSum = mediaRecorder.maxAmplitude
                             accelerometerModel.startStepCount()
                             for (i in 1..50) {
                                 delay(100L)
-                                averageAmplitude += mediaRecorder.maxAmplitude
+                                amplitudeSum += mediaRecorder.maxAmplitude
                             }
                             mediaRecorder.stop()
                             accelerometerModel.stopStepCount()
 
                             val measurement = MeasurementModel(
-                                noiseAmplitude = averageAmplitude / 50,
+                                noiseAmplitude = amplitudeSum / 50,
                                 doesAccelerometerExist = accelerometerModel.doesSensorExist,
                                 doesLightSensorExist = lightSensorModel.doesSensorExist,
                                 movementDetected = accelerometerModel.getMovementInformation(),

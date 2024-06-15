@@ -19,9 +19,9 @@ import androidx.navigation.compose.rememberNavController
 import com.google.android.gms.auth.api.identity.Identity
 import hr.ferit.soundsentry.R
 import hr.ferit.soundsentry.authentication.GoogleAuthClient
-import hr.ferit.soundsentry.permissions.isMeasurementRunning
+import hr.ferit.soundsentry.extension.isMeasurementRunning
 import hr.ferit.soundsentry.service.MeasurementService
-import hr.ferit.soundsentry.view.components.NetworkChecker
+import hr.ferit.soundsentry.extension.NetworkChecker
 import hr.ferit.soundsentry.view.navigation.Screen
 import hr.ferit.soundsentry.viewmodel.SignInViewModel
 import kotlinx.coroutines.launch
